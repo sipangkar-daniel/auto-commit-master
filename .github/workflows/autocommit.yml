@@ -1,38 +1,50 @@
 name: Auto commit
 
 on:
-  push:
-    branches:
-      - main
-
   schedule:
-    - cron: "*/5 * * * *"
-
+    - cron: "*/5 * * * *"   # tiap 5 menit (UTC)
   workflow_dispatch:
 
 jobs:
   auto_commit:
-    if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repo
+        uses: actions/checkout@v3
         with:
-          persist-credentials: false
           fetch-depth: 0
 
-      - name: Modify last update
+      - name: Update LAST_UPDATED
         run: |
           date -u '+%Y-%m-%dT%H:%M:%SZ' > LAST_UPDATED
 
       - name: Commit changes
         run: |
-          git config user.email "daniel222mu@gmail.com"
-          git config user.name "Sipangkar"
-          git add -A
-          git commit -m "chore(bot): 🤖 auto commit" || echo "No changes"
+          git config --local user.email "daniel222mu@gmail.com"
+          git config --local user.name "Sipangkar"
 
-      - name: Push
+          git add LAST_UPDATED
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+
+          messages=(
+            "chore(bot): 😂 auto commit"
+            "chore(bot): 🤖 auto commit"
+            "chore(bot): 👻 auto commit"
+            "chore(bot): 🟩 auto commit"
+            "chore(bot): 🙏 auto commit"
+          )
+
+          rand=$((RANDOM % ${#messages[@]}))
+          git commit -m "${messages[$rand]}"
+
+      - name: Push changes
         uses: ad-m/github-push-action@v0.6.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: master
+          force: true
