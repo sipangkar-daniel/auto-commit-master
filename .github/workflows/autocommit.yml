@@ -7,7 +7,7 @@ on:
       - master
 
   schedule:
-  - cron: "0 */12 * * *"
+  - cron: "0 */7 * * *"
 
 jobs:
   auto_commit:
@@ -31,20 +31,7 @@ jobs:
           git config --local user.name "Sipangkar"
           git add -A
           
-          arr[0]="chore(bot): 😂 auto commit"
-          arr[1]="chore(bot): 😱 auto commit"
-          arr[2]="chore(bot): 👿 auto commit"
-          arr[3]="chore(bot): 💩 auto commit"
-          arr[4]="chore(bot): 🙏 auto commit"
-          arr[5]="chore(bot): 🙈 auto commit"
-          arr[6]="chore(bot): 🐐 auto commit"
-          arr[7]="chore(bot): 🤖 auto commit"
-          arr[8]="chore(bot): 🟩 auto commit"
-          arr[9]="chore(bot): 👻 auto commit"
-          
-          rand=$[$RANDOM % ${#arr[@]}]
-          
-          git commit -m "${arr[$rand]}"
+          git commit -m "lol 😂"
 
       - name: GitHub Push
         uses: ad-m/github-push-action@v0.6.0
