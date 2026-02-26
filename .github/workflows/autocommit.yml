@@ -7,7 +7,7 @@ on:
       - master
 
   schedule:
-  - cron: "0 */7 * * *"
+  - cron: "0 */5 * * *"
 
 jobs:
   auto_commit:
@@ -15,6 +15,17 @@ jobs:
     steps:
       - name: DEBUG
         run: echo "::debug::Ref = ${{github.ref}}"
+
+      - name: Random delay (0–1 hour)
+        run: sleep $((RANDOM % 3600))
+
+      - name: Random skip (50% chance)
+        run: |
+          if [ $((RANDOM % 2)) -eq 0 ]; then
+            echo "Skipping this run..."
+            exit 0
+          fi
+      
       - uses: actions/checkout@v3
         with:
           persist-credentials: false
