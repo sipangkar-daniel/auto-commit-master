@@ -23,8 +23,8 @@ jobs:
 
       - name: Modify last update
         run: |
-          skip = $((RANDOM % 2)) -eq 0
-          if [ $skip ]; then
+          RAND=$((RANDOM % 2))
+          if [ $RAND -eq 0 ]; then
             echo "Skipping this run..."
             exit 0
           fi
