@@ -41,6 +41,13 @@ jobs:
           git config --local user.email "daniel222mu@gmail.com"
           git config --local user.name "Sipangkar"
           git add -A
+
+          # cek apakah ada perubahan
+          if git diff --cached --quiet; then
+            echo "No changes to commit. Skipping commit."
+            exit 0
+          fi
+          
           d=`date '+%Y-%m-%dT%H:%M:%SZ'`
           git commit -m "$d"
 
