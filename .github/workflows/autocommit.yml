@@ -24,12 +24,17 @@ jobs:
       - name: Modify last update
         run: |
           RAND=$((RANDOM % 2))
-          if [ $RAND -eq 0 ]; then
-            echo "Skipping this run..."
+          D=$(date '+%Y-%m-%dT%H:%M:%SZ')
+        
+          echo "Status: RAND is $RAND at $D"
+          
+          if [ "$RAND" -eq 0 ]; then
+            echo "Random skip triggered. Skipping this run..."
             exit 0
           fi
-          d=`date '+%Y-%m-%dT%H:%M:%SZ'`
-          echo $d > LAST_UPDATED
+          
+          echo "$D" > LAST_UPDATED
+          echo "LAST_UPDATED file has been refreshed."
 
       - name: Commit changes
         run: |
